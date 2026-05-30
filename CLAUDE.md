@@ -40,14 +40,14 @@ Rules:
 
 ### End-of-phase PR workflow
 
-1. All phase work is committed and pushed to `phase-N`
-2. Open a PR from `phase-N` → `main` using `gh pr create`
-3. Claude posts an automated review via GitHub Actions (requires `ANTHROPIC_API_KEY` secret)
-4. User reviews the PR on GitHub
-5. Any review fixes go as new commits on the same branch
-6. User merges using **squash merge** (configured as the only merge strategy)
-7. Branch is auto-deleted after merge
-8. Write `docs/phases/phase-N.md` before opening the PR
+1. Write `docs/phases/phase-N.md` (mandatory before opening the PR)
+2. Commit and push all phase work to `phase-N`
+3. Open a PR from `phase-N` → `main` using `gh pr create`
+4. Claude reviews the PR using `/code-review ultra <PR number>` in Claude Code
+5. User reviews the PR on GitHub
+6. Any fixes go as new commits on the same branch
+7. User merges using **squash merge** (configured as the only merge strategy)
+8. Branch is auto-deleted after merge
 
 ### GitHub repo
 
