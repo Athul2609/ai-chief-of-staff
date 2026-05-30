@@ -1,0 +1,51 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          prompt: |
+            You are reviewing a pull request for the AI Chief of Staff project.
+            This is a Python/FastAPI backend with LangGraph orchestration, PostgreSQL, and a Next.js frontend.
+
+            Review the PR diff and post a structured code review comment covering:
+
+            ## Architecture & Design
+            - Does the code follow the principles in CLAUDE.md (thin agents, deterministic first, strong typing, modular design)?
+            - Any concerns about the separation of agents / tools / services?
+
+            ## Correctness
+            - Logic bugs or edge cases that could cause failures
+            - Incorrect async/await usage
+            - SQLAlchemy session misuse
+
+            ## Security
+            - Secrets or credentials exposed
+            - SQL injection risks (the SQL agent must be read-only)
+            - Any OWASP top-10 concerns
+
+            ## Code Quality
+            - Pydantic models missing validation
+            - Type hints missing or incorrect
+            - Dead code or unnecessary complexity
+
+            ## Tests
+            - Are new features covered by tests?
+            - Any test coverage gaps worth flagging?
+
+            Be specific — reference file names and line numbers. Flag blockers vs suggestions clearly.
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}

@@ -1,5 +1,63 @@
 # CLAUDE.md
 
+## Git Workflow (MANDATORY)
+
+Follow these rules for every commit and every phase.
+
+### Branch strategy
+
+- `main` is protected — never commit directly to it
+- Every phase gets its own branch: `phase-N` (e.g. `phase-3`)
+- Branch off `main` at the start of each phase: `git checkout -b phase-N`
+- All work for a phase goes on that branch
+
+### Commit message format (Conventional Commits)
+
+```
+<type>: <short description in imperative mood, under 72 chars>
+```
+
+Types:
+- `feat` — new capability or endpoint
+- `fix` — bug fix
+- `chore` — config, deps, tooling, scaffolding
+- `docs` — documentation only
+- `refactor` — restructuring without behavior change
+- `test` — adding or updating tests
+
+Examples:
+```
+feat: add /chat endpoint with streaming SSE
+fix: handle null score in grade calculation
+chore: add qdrant service to docker-compose
+docs: write phase-3 report
+```
+
+Rules:
+- One logical change per commit — never batch unrelated changes
+- Present tense, imperative mood ("add" not "added")
+- Commit frequently throughout a phase, not all at once at the end
+
+### End-of-phase PR workflow
+
+1. All phase work is committed and pushed to `phase-N`
+2. Open a PR from `phase-N` → `main` using `gh pr create`
+3. Claude posts an automated review via GitHub Actions (requires `ANTHROPIC_API_KEY` secret)
+4. User reviews the PR on GitHub
+5. Any review fixes go as new commits on the same branch
+6. User merges using **squash merge** (configured as the only merge strategy)
+7. Branch is auto-deleted after merge
+8. Write `docs/phases/phase-N.md` before opening the PR
+
+### GitHub repo
+
+- Remote: https://github.com/Athul2609/ai-chief-of-staff
+- Default branch: `main`
+- Merge strategy: squash merge only
+- Branch auto-delete: enabled after merge
+
+---
+
 ## Project Overview
 
 This repository contains an implementation of an Open-Source AI Chief of Staff.
