@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,7 +15,7 @@ async def get_or_create_conversation(db: AsyncSession, session_id: str) -> Conve
     if not conversation:
         conversation = Conversation(
             session_id=session_id,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.utcnow(),
         )
         db.add(conversation)
         await db.flush()
@@ -44,7 +44,7 @@ async def save_message(
         conversation_id=conversation_id,
         role=role,
         content=content,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.utcnow(),
     )
     db.add(message)
     await db.flush()

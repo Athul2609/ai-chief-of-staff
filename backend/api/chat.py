@@ -45,7 +45,7 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
 
     conversation_id = conversation.id
     lc_messages = _to_lc_messages(history, request.message)
-    llm = ChatOllama(model=settings.ollama_model, base_url=settings.ollama_base_url)
+    llm = ChatOllama(model=settings.ollama_model, base_url=settings.ollama_base_url, think=False)
 
     async def event_stream():
         full_response = ""
@@ -65,7 +65,11 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
     return StreamingResponse(
         event_stream(),
         media_type="text/event-stream",
-        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+        },
     )
 
 
