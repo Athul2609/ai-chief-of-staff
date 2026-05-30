@@ -1,5 +1,5 @@
-from enum import Enum
 from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel
 
@@ -10,17 +10,19 @@ class MessageRole(str, Enum):
     system = "system"
 
 
-class Message(BaseModel):
-    role: MessageRole
-    content: str
-
-
 class ChatRequest(BaseModel):
     message: str
     session_id: str | None = None
 
 
-class ChatResponse(BaseModel):
-    session_id: str
-    message: Message
+class MessageSchema(BaseModel):
+    role: MessageRole
+    content: str
     created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ConversationHistory(BaseModel):
+    session_id: str
+    messages: list[MessageSchema]

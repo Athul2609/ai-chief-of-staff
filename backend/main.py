@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from api.chat import router as chat_router
 from api.health import router as health_router
 from config import get_settings
 
@@ -57,3 +58,4 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 app.include_router(health_router)
+app.include_router(chat_router)
